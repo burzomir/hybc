@@ -28,7 +28,17 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
+REST_FRAMEWORK = {'DEFAULT_AUTHENTICATION_CLASSES': ('app.auth_backend.TokenAuthentication', )}
+
 # Application definition
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "hybc.routing.channel_routing",
+    },
+}
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -40,6 +50,8 @@ INSTALLED_APPS = [
 
     'rest_framework.authtoken',
     'rest_framework',
+
+    'channels',
 
     'corsheaders',
 

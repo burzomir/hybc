@@ -65,10 +65,15 @@ class DeviceRelationConsumer(RestTokenConsumerMixin, WebsocketConsumer):
     def get_action_handler(self, type):
         return {
             'UPDATE_NODES': self.update_nodes_handler,
+            'GO_TO': self.go_to_handler,
+            'GO_TO_CANCEL': self.go_to_cancel_handler,
         }[type]
 
+    @property
+    def from_device_id(self):
+        return self.kwargs['from_device_id']
+
     def connection_groups(self, from_device_id=None, **kwargs):
-        self.from_device_id = from_device_id
         if self.message.user.is_anonymous():
             print('User is anonymous')
             return []
@@ -80,18 +85,19 @@ class DeviceRelationConsumer(RestTokenConsumerMixin, WebsocketConsumer):
         return super(DeviceRelationConsumer, self).connect(message, **kwargs)
 
     def receive(self, text=None, bytes=None, **kwargs):
-        data = json.loads(text)
+        data = json.loads(text)['message']
         handler = self.get_action_handler(data['type'])
         handler(data['payload'])
 
     def update_nodes_handler(self, payload):
         device_relations = self.refresh_device_relations(payload)
         self.notify_subscribers(device_relations)
+        self.send(text='"OK!"')
 
     @transaction.atomic
     def refresh_device_relations(self, data: 'List[dict]') -> 'List[dict]':
         DeviceRelation.objects.filter(from_device_id=self.from_device_id).delete()
-        sr = DeviceRelationSerializer(data, many=True)
+        sr = DeviceRelationSerializer(data=data, many=True)
         sr.is_valid(raise_exception=True)
         sr.save()
         return sr.data
@@ -108,3 +114,10 @@ class DeviceRelationConsumer(RestTokenConsumerMixin, WebsocketConsumer):
                    .filter(subscribed_to=self.from_device_id)
                    .values_list('subscriber', flat=True))
 
+    def go_to_handler(self, searched_device):
+        pass
+
+
+
+    def go_to_cancel_handler(self, payload):
+        DeviceSubscription.objects.filter(subscriber=self.from_device_id).delete()
