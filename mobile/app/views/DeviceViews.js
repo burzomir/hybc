@@ -34,20 +34,20 @@ export default class DeviceVIews extends React.Component {
             devices: [],
             isSearching: false
         }
+        this.bleManager = new BleManager();
     }
 
     search() {
-        const manager = new BleManager();
         const results = [];
 
         this.setState(prev => ({ ...prev, isSearching: true }));
 
-        manager.startDeviceScan(null, null, (_, device) => {
+        this.bleManager.startDeviceScan(null, null, (_, device) => {
             results.push(device);
         });
 
         setTimeout(() => {
-            manager.stopDeviceScan();
+            this.bleManager.stopDeviceScan();
             const devices = immutable
                 .List(results)
                 .groupBy(device => device.id)
@@ -61,6 +61,10 @@ export default class DeviceVIews extends React.Component {
     componentDidMount() {
         this.search();
         this.props.navigation.setParams({ search: this.search.bind(this) });
+    }
+
+    componentWillUnmount() {
+        this.bleManager.destroy();
     }
 
     render() {
