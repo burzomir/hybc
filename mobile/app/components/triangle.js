@@ -5,15 +5,19 @@ import {Surface} from "gl-react-native";
 import GL from "gl-react";
 const Dimensions = require('Dimensions');
 const window = Dimensions.get('window');
-import Triangle from './triangle';
+//import Triangle from './triangle';
 
-export default class GLExample extends Component {
+export default class extends Component {
   render () {
     return <View>
       <Surface width={window.width} height={window.height}>
         <GL.Node
           shader={{
-            frag: Triangle
+            frag: `
+            void main () {
+              gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); // red
+            }
+                `
           }}
         />
       </Surface>

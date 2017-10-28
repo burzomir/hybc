@@ -7,6 +7,7 @@ import {
   Button
 } from 'react-native';
 
+import Triangle from '../components/triangle';
 export default class HomeScreen extends Component {
     static navigationOptions = {
       title: 'FInd me app',
@@ -15,6 +16,7 @@ export default class HomeScreen extends Component {
       const { navigate } = this.props.navigation;
       return (
         <View>
+          <Triangle />
           <Button
             onPress={() => navigate('DeviceVIews')}
             title="Knowing Friend List"
