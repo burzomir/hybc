@@ -1,7 +1,10 @@
 import json
+from typing import List, Set
 
+from channels import Group
 from channels.generic.websockets import WebsocketConsumer
 from django.contrib.auth import get_user_model
+from django.db import transaction
 from django.db.models import Q
 from django.db.models.functions import Length
 from rest_framework import parsers, renderers
@@ -9,7 +12,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from app.serializers import AuthTokenSerializer, UserSerializer
+from app.auth_token import RestTokenConsumerMixin
+from app.models import DeviceRelation, DeviceSubscription
+from app.serializers import AuthTokenSerializer, UserSerializer, DeviceRelationSerializer
 
 User = get_user_model()
 
@@ -52,3 +57,54 @@ class UserLookUpConsumer(WebsocketConsumer):
         data = {'message': serializer.data}
         data = json.dumps(data)
         self.message.reply_channel.send({"text": data})
+
+
+class DeviceRelationConsumer(RestTokenConsumerMixin, WebsocketConsumer):
+    rest_user = True
+
+    def get_action_handler(self, type):
+        return {
+            'UPDATE_NODES': self.update_nodes_handler,
+        }[type]
+
+    def connection_groups(self, from_device_id=None, **kwargs):
+        self.from_device_id = from_device_id
+        if self.message.user.is_anonymous():
+            print('User is anonymous')
+            return []
+        if not from_device_id:
+            print('from_device_id is False')
+        return [from_device_id]
+
+    def connect(self, message, **kwargs):
+        return super(DeviceRelationConsumer, self).connect(message, **kwargs)
+
+    def receive(self, text=None, bytes=None, **kwargs):
+        data = json.loads(text)
+        handler = self.get_action_handler(data['type'])
+        handler(data['payload'])
+
+    def update_nodes_handler(self, payload):
+        device_relations = self.refresh_device_relations(payload)
+        self.notify_subscribers(device_relations)
+
+    @transaction.atomic
+    def refresh_device_relations(self, data: 'List[dict]') -> 'List[dict]':
+        DeviceRelation.objects.filter(from_device_id=self.from_device_id).delete()
+        sr = DeviceRelationSerializer(data, many=True)
+        sr.is_valid(raise_exception=True)
+        sr.save()
+        return sr.data
+
+    def notify_subscribers(self, data: 'List[dict]'):
+        for subscriber_group in self.get_subscribed_groups():
+            Group(subscriber_group).send({
+                'text': data
+            })
+
+    def get_subscribed_groups(self) -> 'Set[str]':
+        return set(DeviceSubscription
+                   .objects
+                   .filter(subscribed_to=self.from_device_id)
+                   .values_list('subscriber', flat=True))
+

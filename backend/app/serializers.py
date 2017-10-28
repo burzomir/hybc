@@ -2,11 +2,23 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 from rest_framework.compat import authenticate
 
+from app.models import DeviceRelation
+
 User = get_user_model()
 
 from rest_framework import serializers
 
 from django.contrib.auth.models import User as django_user
+
+
+class DeviceRelationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DeviceRelation
+        fields = [
+            'from_device_id',
+            'to_device_id',
+            'distance',
+        ]
 
 
 class AuthTokenSerializer(serializers.Serializer):
