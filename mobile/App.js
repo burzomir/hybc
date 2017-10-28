@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import HomeScreen from './app/views/HomeScreen';
 import DeviceVIews from './app/views/DeviceViews';
+import LoginScreen from './app/views/LoginScreen';
 import { StackNavigator } from 'react-navigation';
 import connector from './app/lib/connect';
 
@@ -24,6 +25,7 @@ api
   .catch(console.log);
 
 const App_ = StackNavigator({
+  Login: { screen: LoginScreen},
   Home: { screen: HomeScreen },
   DeviceVIews: { screen: DeviceVIews },
 });
