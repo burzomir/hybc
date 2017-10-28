@@ -9,12 +9,23 @@ import {
 } from 'react-native';
 
 import immutable from 'immutable';
+import _ from "lodash";
 
 import { BleManager } from 'react-native-ble-plx';
 
 export default class DeviceVIews extends React.Component {
-    static navigationOptions = {
-        title: 'Searching',
+    static navigationOptions = ({ navigation }) => {
+
+        const onPress = _.flow([
+            () => _.defaultTo(navigation.state, {}),
+            ({ params }) => _.defaultTo(params, {}),
+            ({ search }) => _.defaultTo(search, () => { }),
+        ])();
+
+        return {
+            title: 'Searching',
+            headerRight: <Button title="Search" {...{ onPress }} />
+        }
     };
 
     constructor(props) {
@@ -23,20 +34,20 @@ export default class DeviceVIews extends React.Component {
             devices: [],
             isSearching: false
         }
+        this.bleManager = new BleManager();
     }
 
-    componentDidMount() {
-        const manager = new BleManager();
+    search() {
         const results = [];
 
         this.setState(prev => ({ ...prev, isSearching: true }));
 
-        manager.startDeviceScan(null, null, (_, device) => {
+        this.bleManager.startDeviceScan(null, null, (_, device) => {
             results.push(device);
         });
 
         setTimeout(() => {
-            manager.stopDeviceScan();
+            this.bleManager.stopDeviceScan();
             const devices = immutable
                 .List(results)
                 .groupBy(device => device.id)
@@ -45,6 +56,15 @@ export default class DeviceVIews extends React.Component {
                 .toArray();
             this.setState(prev => ({ devices, isSearching: false }));
         }, 1000);
+    }
+
+    componentDidMount() {
+        this.search();
+        this.props.navigation.setParams({ search: this.search.bind(this) });
+    }
+
+    componentWillUnmount() {
+        this.bleManager.destroy();
     }
 
     render() {
@@ -75,6 +95,7 @@ const styles = {
 const renderItem = ({ item }) => (
     <View style={[styles.container, styles.item]}>
         <Text>{item.id}</Text>
+        <Text>{item.name}</Text>
         <Text>{item.rssi}</Text>
     </View>
 );
