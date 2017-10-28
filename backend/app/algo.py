@@ -1,9 +1,35 @@
 from app.models import DeviceRelation
 
 
+def flatter(ls):
+    output = []
+    for element in ls:
+        if type(element) in (set, list, tuple):
+            for sub_element in element:
+                output.append(sub_element)
+        else:
+            output.append(element)
+    return output
+
+
+def remove_redundant_intersection(intersection, ls):
+    output = set()
+    f_ls = flatter(ls)
+    for ele in intersection:
+        if ele not in f_ls:
+            output.add(ele)
+    return output
+
+
 def algo(from_device, to_device, steps=None):
+    if from_device == to_device:
+        return []
+    print(f'from_device: {from_device}, to_device: {to_device}, steps: {steps}.')
     if steps is None:
         steps = [from_device]
+    else:
+        if steps and steps[-1] == to_device:
+            return []
 
     A = set(DeviceRelation
          .objects
@@ -19,7 +45,12 @@ def algo(from_device, to_device, steps=None):
 
     X = A.intersection(B)
     if X:
-        steps += [X]
+        isect = remove_redundant_intersection(X, steps)
+        isect = isect.difference(to_device)
+        if len(isect) == 1:
+            steps += isect.pop()
+        elif isect:
+            steps += [isect]
         steps += to_device
         return steps
 
@@ -29,6 +60,7 @@ def algo(from_device, to_device, steps=None):
                  .values_list('from_device_id', flat=True))
 
     C_list = C_list.difference({from_device})
+    C_list = remove_redundant_intersection(C_list, steps)
 
     for c in C_list:
         C = set(DeviceRelation
@@ -39,7 +71,12 @@ def algo(from_device, to_device, steps=None):
         if A_i_C:
             result = algo(c, to_device, None)
             if result:
-                steps += [A_i_C]
+                isect = remove_redundant_intersection(A_i_C, steps)
+                isect =isect.difference(to_device)
+                if len(isect) == 1:
+                    steps += isect.pop()
+                elif isect:
+                    steps += [isect]
                 steps += result
                 break
 
