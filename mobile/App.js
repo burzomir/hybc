@@ -25,7 +25,7 @@ import { StackNavigator } from 'react-navigation';
 //   .catch(console.log);
 
 const App_ = StackNavigator({
- // Login: { screen: LoginScreen},
+  // Login: { screen: LoginScreen},
   Home: { screen: HomeScreen },
   DeviceVIews: { screen: DeviceVIews },
 });
