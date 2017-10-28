@@ -1,3 +1,4 @@
 Django==1.11.6
 djangorestframework==3.7.1
 channels==1.1.8
+django-cors-headers==2.1.0
