@@ -20,12 +20,11 @@ export default class NodesSocket extends React.Component {
 
     componentDidMount() {
         const { baseUrl, token } = this.props;
-        const deviceID = 0;
         const api = connect(baseUrl);
         api
             .login('test1', 'test1')
             .then(token => {
-                const url = `wss://${baseUrl}/device/${deviceID}?token=${token}`;
+                const url = `wss://${baseUrl}/device/${this.deviceName.split(' ').join('')}?token=${token}`;
                 this.socket = new WS(url, this.handleMessage.bind(this));
             });
 
@@ -39,8 +38,8 @@ export default class NodesSocket extends React.Component {
         const data = {
             type: 'UPDATE_NODES',
             payload: nodes.map(node => ({
-                from_device_id: this.deviceName,
-                to_device_id: node.name || node.id,
+                from_device_id: this.deviceName.split(' ').join(''),
+                to_device_id: (node.name && node.name.split(' ').join('')) || node.id,
                 distance: node.rssi
             }))
         };
