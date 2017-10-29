@@ -1,4 +1,4 @@
-import RestApi from '../lib/connect';
+import RestApi from '../myLib/connect';
 import { AUTH_LOGIN, AUTH_LOGIN_SUCCESS } from './actionTypes';
 const api = RestApi('https://hybc.jroslaniec.com:8000');
 

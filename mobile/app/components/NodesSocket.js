@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import immutable from 'immutable';
 import _ from "lodash";
-import { WS } from '../lib/ws';
-import connect from '../lib/connect';
+import { WS } from '../myLib/ws';
+import connect from '../myLib/connect';
 
 export default class NodesSocket extends React.Component {
 
