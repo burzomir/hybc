@@ -8,6 +8,8 @@ import {
   TextInput
 } from 'react-native';
 
+const color = "#3ab9d6";
+
 export default class DeviceVIews extends Component {
   constructor(props) {
     super(props);
@@ -22,20 +24,23 @@ export default class DeviceVIews extends Component {
     render() {
       return (
         <View style={styles.container}>
-          <Text style={styles.text}>add new</Text>
+          <Text style={styles.text}>ADD NEW</Text>
           <Text style={styles.bigText}>friend</Text>
           <View style={styles.form}>
             <Text style={styles.label}>Type name</Text>
             <TextInput
               onChangeText={(e) => this.onUpdate(e)}
-              autoFocus
               value={this.state.value}
               style={styles.input}
+              selectionColor={color}
+              underlineColorAndroid="#333333"
             />
             <Button
               style={styles.button}
               onPress={() => console.log("błaton został naciśnięty")}
               title="ADD FRIEND"
+              color={color}
+              padding="20"
             ></Button>
           </View>
         </View>
@@ -49,17 +54,20 @@ export default class DeviceVIews extends Component {
       flex: 1,
       flexDirection: "column",
       alignItems: "stretch",
-      backgroundColor: "#1b1f2e"
+      backgroundColor: "#1b1f2e",
     },
     text: {
       marginTop: 30,
-      fontSize: 14,
+      fontSize: 22,
       textAlign: "center",
       color: "#ffffff",
+      fontFamily: "Futura-Boo",
+      marginBottom: 0
     },
     bigText: {
-      marginTop: 10,
-      fontSize: 30,
+      fontFamily: "FuturaDisComD",
+      marginTop: -10,
+      fontSize: 80,
       textAlign: "center",
       color: "#ffffff",
     },
@@ -71,18 +79,24 @@ export default class DeviceVIews extends Component {
     },
     input: {
       marginTop: 10,
-      fontSize: 24,
+      fontSize: 26,
       color: "#ffffff",
+      fontFamily: "Futura-Boo",
+      backgroundColor: "#333333",
+      paddingHorizontal: 8,
+      paddingVertical: 13,
+      borderColor: "#ff0000",
+      marginBottom: 40,
     },
     label: {
       color: "#dddddd",
-      fontSize: 12
+      fontSize: 20,
+      fontFamily: "Futura-Boo",
     },
     button: {
       paddingVertical: 25,
       height: 160,
       textAlign: "center",
-      backgroundColor: "#3ab9d6",
       color: "#ffffff"
     }
   })

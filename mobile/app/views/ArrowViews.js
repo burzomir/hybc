@@ -22,7 +22,7 @@ export default class DeviceVIews extends Component {
     render() {
       return (
         <View style={styles.container}>
-          <Text style={styles.text}>follow</Text>
+          <Text style={styles.text}>FOLLOW</Text>
           <Text style={styles.bigText}>arrow</Text>
           <View style={styles.form}>
             <Text style={styles.label}>MIEJSCE NA SZCZAŁKE</Text>
@@ -42,15 +42,19 @@ export default class DeviceVIews extends Component {
     },
     text: {
       marginTop: 30,
-      fontSize: 14,
+      fontSize: 26,
       textAlign: "center",
       color: "#ffffff",
+      fontFamily: "Futura-Boo",
+      marginBottom: 0
     },
     bigText: {
-      marginTop: 10,
+      marginTop: -10,
       fontSize: 30,
       textAlign: "center",
       color: "#ffffff",
+      fontFamily: "FuturaDisComD",
+      fontSize: 75,
     },
     form: {
       flex: 1,

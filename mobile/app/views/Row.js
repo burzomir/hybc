@@ -59,8 +59,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 24,
-        fontFamily: "futura_bold",
-        fontWeight: "bold",
+        fontFamily: "Futura-Bol",
         padding: 0,
         color: "#ffffff",
         width: 200
