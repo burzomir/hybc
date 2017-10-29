@@ -95,8 +95,8 @@ class DeviceRelationConsumer(RestTokenConsumerMixin, WebsocketConsumer):
         DeviceSubscription.objects.filter(subscribed_to=self.from_device_id).delete()
 
     def update_nodes_handler(self, payload):
-        device_relations = self.refresh_device_relations(payload)
-        self.notify_subscribers(device_relations)
+        self.refresh_device_relations(payload)
+        self.notify_subscribers()
         self.send(text='"OK!"')
 
     @transaction.atomic
@@ -107,20 +107,16 @@ class DeviceRelationConsumer(RestTokenConsumerMixin, WebsocketConsumer):
         sr.save()
         return sr.data
 
-    def notify_subscribers(self, data: 'List[dict]'):
-        for subscriber_group in self.get_subscribed_groups():
-            destinations = set(RequestedSearch
-                    .objects
-                    .filter(from_device=subscriber_group)
-                    .values_list('to_device', flat=True))
-            for d in destinations:
-                self.send_go_to_path(subscriber_group, d, subscriber_group)
-
-    def get_subscribed_groups(self):
-        return set(DeviceSubscription
-                   .objects
-                   .filter(subscribed_to=self.from_device_id)
-                   .values_list('subscriber', flat=True))
+    def notify_subscribers(self):
+        device_subscriptions = set(DeviceSubscription
+                                   .objects
+                                   .filter(subscribed_to=self.from_device_id))
+        for subscription in device_subscriptions:
+            self.send_go_to_path(
+                subscription.subscriber,
+                RequestedSearch.objects.filter(from_device=subscription.subscriber).last().to_device,
+                subscription.subscriber,
+            )
 
     def go_to_handler(self, searched_device):
         _, _ = RequestedSearch.objects.get_or_create(from_device=self.from_device_id, to_device=searched_device)
@@ -130,11 +126,11 @@ class DeviceRelationConsumer(RestTokenConsumerMixin, WebsocketConsumer):
             DeviceSubscription(subscriber=self.from_device_id, subscribed_to=ele)
             for ele in flatter(path[1:])
         ])
-        self.send_go_to_path(searched_device, self.from_device_id, path)
+        self.send_go_to_path(self.from_device_id, searched_device, self.from_device_id, path)
 
-    def send_go_to_path(self, searched_device, send_to_group, path=None):
+    def send_go_to_path(self, searched_from_device, searched_to_device, send_to_group, path=None):
         if not path:
-            path = algo(self.from_device_id, searched_device)
+            path = algo(searched_from_device, searched_to_device)
 
         new_path = []
         for ele in path:
