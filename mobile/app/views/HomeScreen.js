@@ -5,46 +5,72 @@ import {
   Text,
   View,
   Button,
-  Animated
+  Image,
+  ListView,
+Keyboard,
 } from 'react-native';
-
+import Row from './Row';
 import Triangle from '../components/triangle';
-export default class HomeScreen extends Component {
-    static navigationOptions = {
-      title: 'FInd me app',
-    };
 
+const arr = [
+  {key: 1, value: 444},
+  {key: 2, value: 444},
+  {key: 3, value: 444},
+  {key: 4, value: 444},
+  {key: 5, value: 444},
+];
+
+const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+const tab = ds.cloneWithRows(arr);
+export default class HomeScreen extends Component {
     render() {
       const { navigate } = this.props.navigation;
-      this.animatedValue = new Animated.Value(0);
-      Animated.timing(this.animatedValue, {
-        toValue: 1,
-        duration: 500
-      }).start()
-      const interpolateRotation = this.animatedValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['200deg', '280deg'],
-      })
-      const animatedStyle = {
-        transform: [
-          { rotate: interpolateRotation }
-        ]
-      }
-
       return (
-        <View>
-           <Animated.View style={[animatedStyle]}>
-          <Triangle />
-          </Animated.View>
-          <Button
-            onPress={() => navigate('DeviceVIews')}
-            title="Knowing Friend List"
-          />
-          <Button
-            onPress={() => navigate('DeviceVIews')}
-            title="Search"
-          />
+        <View style={styles.container}>
+          <Image source={require('./assets/logo.png')} style={styles.logo} />
+            <ListView
+              style={styles.list}
+              enableEmptySections
+              dataSource={tab}
+              renderRow={({ key, value }) => {
+                return (
+                  <Row
+                    key={key}
+                    value={value}
+                    navigation={this.props.navigation}
+                  />
+                )
+              }}
+            />
         </View>
       );
     }
   }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 30,
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: "#1b1f2e"
+  },
+  list: {
+    flex: 1
+  },
+  logo: {
+    width: 286/2,
+    height: 128/2,
+    marginBottom: 50
+  },
+  listContainer: {
+    flex: 1
+  }
+})
+
+
+
+
+
+
+
