@@ -37,8 +37,12 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		A3DB909B1A904957926D6019 /* libBleClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C273EB3D71DC4D348912BDE1 /* libBleClient.a */; };
+<<<<<<< HEAD
 		EDAD4A2CA7E842A3A09219A3 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 35A4E4E2099A44B4B395AB2E /* libRNDeviceInfo.a */; };
 		FC44FCF46A514BDC896A7866 /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 069297C01AB746DE800C3366 /* libRNDeviceInfo-tvOS.a */; };
+=======
+		4F8E314BB39B49EEB6E5365F /* libRNSensors.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ECD8EA4C90046A2AB4CF50B /* libRNSensors.a */; };
+>>>>>>> a05040b03a7660a52e3a883cc88283cf2212a90d
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -268,9 +272,14 @@
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		3E59AACC8A914143A515F667 /* BleClient.xcodeproj */ = {isa = PBXFileReference; name = "BleClient.xcodeproj"; path = "../node_modules/react-native-ble-plx/ios/BleClient.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		C273EB3D71DC4D348912BDE1 /* libBleClient.a */ = {isa = PBXFileReference; name = "libBleClient.a"; path = "libBleClient.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+<<<<<<< HEAD
 		375390A3339448348CFDE2A3 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; name = "RNDeviceInfo.xcodeproj"; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		35A4E4E2099A44B4B395AB2E /* libRNDeviceInfo.a */ = {isa = PBXFileReference; name = "libRNDeviceInfo.a"; path = "libRNDeviceInfo.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		069297C01AB746DE800C3366 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; name = "libRNDeviceInfo-tvOS.a"; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+=======
+		744B1E45DECE42D9BACFB162 /* RNSensors.xcodeproj */ = {isa = PBXFileReference; name = "RNSensors.xcodeproj"; path = "../node_modules/react-native-sensors/ios/RNSensors.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		7ECD8EA4C90046A2AB4CF50B /* libRNSensors.a */ = {isa = PBXFileReference; name = "libRNSensors.a"; path = "libRNSensors.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+>>>>>>> a05040b03a7660a52e3a883cc88283cf2212a90d
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -300,8 +309,12 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				A3DB909B1A904957926D6019 /* libBleClient.a in Frameworks */,
+<<<<<<< HEAD
 				EDAD4A2CA7E842A3A09219A3 /* libRNDeviceInfo.a in Frameworks */,
 				FC44FCF46A514BDC896A7866 /* libRNDeviceInfo-tvOS.a in Frameworks */,
+=======
+				4F8E314BB39B49EEB6E5365F /* libRNSensors.a in Frameworks */,
+>>>>>>> a05040b03a7660a52e3a883cc88283cf2212a90d
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,7 +484,11 @@
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				3E59AACC8A914143A515F667 /* BleClient.xcodeproj */,
+<<<<<<< HEAD
 				375390A3339448348CFDE2A3 /* RNDeviceInfo.xcodeproj */,
+=======
+				744B1E45DECE42D9BACFB162 /* RNSensors.xcodeproj */,
+>>>>>>> a05040b03a7660a52e3a883cc88283cf2212a90d
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1021,12 +1038,19 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+=======
+>>>>>>> a05040b03a7660a52e3a883cc88283cf2212a90d
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-ble-plx/ios/**",
+<<<<<<< HEAD
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
+=======
+					"$(SRCROOT)\..\node_modules\react-native-sensors\ios",
+>>>>>>> a05040b03a7660a52e3a883cc88283cf2212a90d
 				);
 			};
 			name = Debug;
@@ -1049,12 +1073,19 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+=======
+>>>>>>> a05040b03a7660a52e3a883cc88283cf2212a90d
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-ble-plx/ios/**",
+<<<<<<< HEAD
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
+=======
+					"$(SRCROOT)\..\node_modules\react-native-sensors\ios",
+>>>>>>> a05040b03a7660a52e3a883cc88283cf2212a90d
 				);
 			};
 			name = Release;
@@ -1077,7 +1108,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-ble-plx/ios/**",
+<<<<<<< HEAD
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
+=======
+					"$(SRCROOT)\..\node_modules\react-native-sensors\ios",
+>>>>>>> a05040b03a7660a52e3a883cc88283cf2212a90d
 				);
 			};
 			name = Debug;
@@ -1099,7 +1134,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-ble-plx/ios/**",
+<<<<<<< HEAD
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
+=======
+					"$(SRCROOT)\..\node_modules\react-native-sensors\ios",
+>>>>>>> a05040b03a7660a52e3a883cc88283cf2212a90d
 				);
 			};
 			name = Release;
@@ -1131,12 +1170,19 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+=======
+>>>>>>> a05040b03a7660a52e3a883cc88283cf2212a90d
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-ble-plx/ios/**",
+<<<<<<< HEAD
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
+=======
+					"$(SRCROOT)\..\node_modules\react-native-sensors\ios",
+>>>>>>> a05040b03a7660a52e3a883cc88283cf2212a90d
 				);
 			};
 			name = Debug;
@@ -1168,12 +1214,19 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+=======
+>>>>>>> a05040b03a7660a52e3a883cc88283cf2212a90d
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-ble-plx/ios/**",
+<<<<<<< HEAD
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
+=======
+					"$(SRCROOT)\..\node_modules\react-native-sensors\ios",
+>>>>>>> a05040b03a7660a52e3a883cc88283cf2212a90d
 				);
 			};
 			name = Release;
@@ -1200,7 +1253,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+=======
+>>>>>>> a05040b03a7660a52e3a883cc88283cf2212a90d
 				);
 			};
 			name = Debug;
@@ -1227,7 +1283,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+<<<<<<< HEAD
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+=======
+>>>>>>> a05040b03a7660a52e3a883cc88283cf2212a90d
 				);
 			};
 			name = Release;

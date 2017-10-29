@@ -4,8 +4,10 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.sensors.RNSensorsPackage;
 import io.github.douglasjunior.ReactNativeEasyBluetooth.classic.ClassicPackage;
 import com.polidea.reactnativeble.BlePackage;
+import com.projectseptember.RNGL.RNGLPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -28,7 +30,9 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new RNDeviceInfo(),
             new ClassicPackage(),
-            new BlePackage()
+          new RNSensorsPackage(),
+          new BlePackage(),
+          new RNGLPackage(),
       );
     }
 

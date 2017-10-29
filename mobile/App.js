@@ -10,9 +10,10 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import HomeScreen from './app/views/HomeScreen';
 import DeviceVIews from './app/views/DeviceViews';
-import LoginScreen from './app/views/LoginScreen';
+import ArrowScreen from './app/views/ArrowViews';
+//import LoginScreen from './app/views/LoginScreen';
 import { StackNavigator } from 'react-navigation';
-import connector from './app/lib/connect';
+//import connector from './app/lib/connect';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import authReducer from './app/auth/reducers';
 
@@ -30,6 +31,9 @@ const App_ = StackNavigator({
   // Login: { screen: LoginScreen },
   Home: { screen: HomeScreen },
   DeviceVIews: { screen: DeviceVIews },
+  Arrow: { screen: ArrowScreen },
+}, {
+  headerMode: "none",
 });
 
 export default class App extends React.Component {
