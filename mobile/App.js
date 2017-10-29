@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import HomeScreen from './app/views/HomeScreen';
 import DeviceVIews from './app/views/DeviceViews';
+import ArrowScreen from './app/views/ArrowViews';
 //import LoginScreen from './app/views/LoginScreen';
 import { StackNavigator } from 'react-navigation';
 // import connector from './app/lib/connect';
@@ -28,6 +29,9 @@ const App_ = StackNavigator({
   // Login: { screen: LoginScreen},
   Home: { screen: HomeScreen },
   DeviceVIews: { screen: DeviceVIews },
+  Arrow: { screen: ArrowScreen },
+}, {
+  headerMode: "none",
 });
 
 export default class App extends React.Component {
