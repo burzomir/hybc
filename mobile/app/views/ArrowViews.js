@@ -22,21 +22,10 @@ export default class DeviceVIews extends Component {
     render() {
       return (
         <View style={styles.container}>
-          <Text style={styles.text}>add new</Text>
-          <Text style={styles.bigText}>friend</Text>
+          <Text style={styles.text}>follow</Text>
+          <Text style={styles.bigText}>arrow</Text>
           <View style={styles.form}>
-            <Text style={styles.label}>Type name</Text>
-            <TextInput
-              onChangeText={(e) => this.onUpdate(e)}
-              autoFocus
-              value={this.state.value}
-              style={styles.input}
-            />
-            <Button
-              style={styles.button}
-              onPress={() => console.log("błaton został naciśnięty")}
-              title="ADD FRIEND"
-            ></Button>
+            <Text style={styles.label}>MIEJSCE NA SZCZAŁKE</Text>
           </View>
         </View>
       );
@@ -69,20 +58,4 @@ export default class DeviceVIews extends Component {
       alignItems: "stretch",
       justifyContent: "center",
     },
-    input: {
-      marginTop: 10,
-      fontSize: 24,
-      color: "#ffffff",
-    },
-    label: {
-      color: "#dddddd",
-      fontSize: 12
-    },
-    button: {
-      paddingVertical: 25,
-      height: 160,
-      textAlign: "center",
-      backgroundColor: "#3ab9d6",
-      color: "#ffffff"
-    }
   })
