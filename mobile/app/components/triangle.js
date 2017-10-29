@@ -6,7 +6,7 @@ import Triangle from 'react-native-triangle';
 var lastPotentials = [];
 var mov = 1;
 var dewiation = mov/5;
-
+var initialPosition = lastPosition = {x:0, y:0, z:0};
 export default class extends Component {
   render () {
     return  <View style={{
@@ -54,11 +54,11 @@ direction={'left'}
   }
 
   checkPosition(myPosition, distance, callback){
-    var potentials = getPotentialLocation(myPosition,distance);
+    var potentials = this.getPotentialLocation(myPosition,distance);
     if (lastPotentials.length==0){
         lastPotentials = potentials;
     } else {
-        lastPotentials =potentials.filter(filterfunc,lastPotentials );
+        lastPotentials =potentials.filter(this.filterfunc,lastPotentials );
     }
     callback(lastPotentials);
 }
@@ -71,38 +71,48 @@ getHorizontalRotation(p2, p1){
 
   componentDidUpdate() {
     var now = Date.now();
-    var diff = now - lastRendered;
-    lastRendered = now;
-    var timeout = diff >= 16 ? 0 : 16 - diff;
+   // var diff = now - lastRendered;
+   // lastRendered = now;
+//var timeout = diff >= 16 ? 0 : 16 - diff;
     setTimeout(() => {
       this.forceUpdate();
-    }, timeout);
+    }, 16);
   }
-
+  getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+}
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        var initialPosition = JSON.stringify(position);
-        console.log("initialPosition", initialPosition);
-       // this.setState({initialPosition});
-      },
-      (error) => alert(error.message),
-      {enableHighAccuracy: true, timeout: 3000, maximumAge: 1000}
-    );
-    this.watchID = navigator.geolocation.watchPosition((position) => {
+    // navigator.geolocation.getCurrentPosition(
+    //   (position) => {
+    //     var initialPosition = JSON.stringify(position);
+    //     console.log("initialPosition", initialPosition);
+    //    // this.setState({initialPosition});
+    //   },
+    //   (error) => alert(error.message),
+    //   {enableHighAccuracy: true, timeout: 3000, maximumAge: 1000}
+    // );
+    setInterval(()=>{
+
+      lastPosition = {
+        x: lastPosition.x + this.getRandomArbitrary(-1,1),
+        y: lastPosition.y + this.getRandomArbitrary(-1,1),
+        z:0
+      }
+    
+   // this.watchID = navigator.geolocation.watchPosition((position) => {
       console.log("gettedPosition");
-      getBlueetothDestinationDistance((distance)=>{
-        checkPosition(position, distance,(destpotentailpositions)=>{
+      this.getBlueetothDestinationDistance((distance)=>{
+        this.checkPosition(lastPosition, distance,(destpotentailpositions)=>{
           console.log("destpotentailpositions",destpotentailpositions);
           if (destpotentailpositions.length>0){
-            var angledeg = getHorizontalRotation({x: destpotentailpositions[0].x, y: destpotentailpositions[0].y}, {x: position.x, y:position.y} );
+            var angledeg = this.getHorizontalRotation({x: destpotentailpositions[0].x, y: destpotentailpositions[0].y}, {x: lastPosition.x, y:lastPosition.y} );
             console.log("angledeg", angledeg)
             this.componentDidUpdate(angledeg)
           }
         });
       });
-      
-    });
+    },2000);
+   // });
     
   }
   componentWillUnmount() {
