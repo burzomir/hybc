@@ -2,12 +2,14 @@
 import React, {Component} from "react";
 import {View, AppRegistry} from "react-native";
 import Triangle from 'react-native-triangle';
+import { rotation } from '../auth/actions';
+import { connect } from 'react-redux';
 
 var lastPotentials = [];
 var mov = 1;
 var dewiation = mov/5;
 var initialPosition = lastPosition = {x:0, y:0, z:0};
-export default class extends Component {
+class arrow extends Component {
   render () {
     return  <View style={{
         flexDirection: 'row',
@@ -65,12 +67,14 @@ direction={'left'}
 
 getHorizontalRotation(p2, p1){
   var angleRadians = Math.atan2(p2.y - p1.y, p2.x - p1.x);
-  var angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI
+  var angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
   return angleDeg;
 }
 
-  componentDidUpdate(angle) {
+  componentDidUpdate2(angle) {
     var now = Date.now();
+    console.log("___comp update", angle);
+    this.props.rotate(angle);
    // var diff = now - lastRendered;
    // lastRendered = now;
 //var timeout = diff >= 16 ? 0 : 16 - diff;
@@ -94,8 +98,8 @@ getHorizontalRotation(p2, p1){
     setInterval(()=>{
 
       lastPosition = {
-        x: lastPosition.x + this.getRandomArbitrary(-1,1),
-        y: lastPosition.y + this.getRandomArbitrary(-1,1),
+        x: lastPosition.x + this.getRandomArbitrary(-5,5),
+        y: lastPosition.y + this.getRandomArbitrary(-5,5),
         z:0
       }
     
@@ -107,7 +111,7 @@ getHorizontalRotation(p2, p1){
           if (destpotentailpositions.length>0){
             var angledeg = this.getHorizontalRotation({x: destpotentailpositions[0].x, y: destpotentailpositions[0].y}, {x: lastPosition.x, y:lastPosition.y} );
             console.log("angledeg", angledeg)
-            this.componentDidUpdate(angledeg)
+            this.componentDidUpdate2(angledeg)
           }
         });
       });
@@ -122,3 +126,11 @@ getHorizontalRotation(p2, p1){
     callback(5); //mock
   }
 }
+const mapDispatchToProps = (dispatch) => ({
+  rotate(deg) {
+    console.log("====--------=====", rotation(deg));
+    dispatch(rotation(deg));
+  }
+})
+
+export default connect(null, mapDispatchToProps)(arrow);

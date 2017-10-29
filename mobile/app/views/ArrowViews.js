@@ -8,15 +8,23 @@ import {
   TextInput,
   Animated
 } from 'react-native';
+import { connect } from 'react-redux';
 import Triangle from '../components/triangle';
 
-export default class DeviceVIews extends Component {
+class DeviceVIews extends Component {
   constructor(props) {
     super(props);
     this.state = {
       value: ''
     };
     this.onUpdate = this.onUpdate.bind(this);
+  }
+  createInterpolateRotation(){
+    console.log("this.props.deg", this.props.deg);
+    return this.animatedValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['0deg', this.props.deg +'deg'],
+    })
   }
   onUpdate(value) {
     this.setState({ value });
@@ -27,10 +35,7 @@ export default class DeviceVIews extends Component {
             toValue: 1,
             duration: 500
           }).start()
-          const interpolateRotation = this.animatedValue.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['200deg', '280deg'],
-          })
+          let interpolateRotation = this.createInterpolateRotation()
           const animatedStyle = {
             transform: [
               { rotate: interpolateRotation }
@@ -81,3 +86,7 @@ export default class DeviceVIews extends Component {
       justifyContent: "center",
     },
   })
+const mapStateToProps = (state) =>   ({
+  deg: state.auth.deg
+}); 
+export default connect(mapStateToProps)(DeviceVIews);

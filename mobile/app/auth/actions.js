@@ -1,5 +1,5 @@
 import RestApi from '../myLib/connect';
-import { AUTH_LOGIN, AUTH_LOGIN_SUCCESS } from './actionTypes';
+import { AUTH_LOGIN, AUTH_LOGIN_SUCCESS, ROTATION } from './actionTypes';
 const api = RestApi('https://hybc.jroslaniec.com:8000');
 
 export const login = (username, password) => {
@@ -17,3 +17,11 @@ export const login = (username, password) => {
             }));
     };
 };
+
+export const rotation = (angledegree) =>{
+    console.log("++++++ROTAT" , angledegree);
+    return  {
+        type: ROTATION,
+        deg: angledegree
+    };
+}
