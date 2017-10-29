@@ -12,8 +12,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from app.algo import algo, flatter
 from app.auth_token import RestTokenConsumerMixin
-from app.models import DeviceRelation, DeviceSubscription
+from app.models import DeviceRelation, DeviceSubscription, RequestedSearch
 from app.serializers import AuthTokenSerializer, UserSerializer, DeviceRelationSerializer
 
 User = get_user_model()
@@ -89,6 +90,10 @@ class DeviceRelationConsumer(RestTokenConsumerMixin, WebsocketConsumer):
         handler = self.get_action_handler(data['type'])
         handler(data['payload'])
 
+    def disconnect(self, message, **kwargs):
+        DeviceRelation.objects.filter(from_device_id=self.from_device_id).delete()
+        DeviceSubscription.objects.filter(subscribed_to=self.from_device_id).delete()
+
     def update_nodes_handler(self, payload):
         device_relations = self.refresh_device_relations(payload)
         self.notify_subscribers(device_relations)
@@ -104,18 +109,46 @@ class DeviceRelationConsumer(RestTokenConsumerMixin, WebsocketConsumer):
 
     def notify_subscribers(self, data: 'List[dict]'):
         for subscriber_group in self.get_subscribed_groups():
-            Group(subscriber_group).send({
-                'text': data
-            })
+            destinations = set(RequestedSearch
+                    .objects
+                    .filter(from_device=subscriber_group)
+                    .values_list('to_device', flat=True))
+            for d in destinations:
+                self.send_go_to_path(subscriber_group, d, subscriber_group)
 
-    def get_subscribed_groups(self) -> 'Set[str]':
+    def get_subscribed_groups(self):
         return set(DeviceSubscription
                    .objects
                    .filter(subscribed_to=self.from_device_id)
                    .values_list('subscriber', flat=True))
 
     def go_to_handler(self, searched_device):
-        pass
+        _, _ = RequestedSearch.objects.get_or_create(from_device=self.from_device_id, to_device=searched_device)
+
+        path = algo(self.from_device_id, searched_device)
+        DeviceSubscription.objects.bulk_create([
+            DeviceSubscription(subscriber=self.from_device_id, subscribed_to=ele)
+            for ele in flatter(path[1:])
+        ])
+        self.send_go_to_path(searched_device, self.from_device_id, path)
+
+    def send_go_to_path(self, searched_device, send_to_group, path=None):
+        if not path:
+            path = algo(self.from_device_id, searched_device)
+
+        new_path = []
+        for ele in path:
+            if type(ele) == set:
+                new_path.append(list(ele))
+            else:
+                new_path.append(ele)
+
+        Group(send_to_group).send({
+            'text': json.dumps({
+                'type': 'GO_TO_PATH',
+                'payload': new_path
+            })
+        })
 
     def go_to_cancel_handler(self, payload):
         DeviceSubscription.objects.filter(subscriber=self.from_device_id).delete()
