@@ -5,7 +5,8 @@ import {
   Text,
   View,
   Button,
-  TextInput
+  TextInput,
+  AsyncStorage
 } from 'react-native';
 
 const color = "#3ab9d6";
@@ -14,12 +15,38 @@ export default class DeviceVIews extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: ''
+      value: '',
+      all: {}
     };
     this.onUpdate = this.onUpdate.bind(this);
+    this.onClick = this.onClick.bind(this);
+  }
+  componentWillMount() {
+    AsyncStorage.getItem("items").then(json => {
+      try {
+        const all = JSON.parse(json);
+        this.setState({ all });
+      } catch(e) {
+      }
+    });
+  }
+  onClick() {
+    const newItems = {...this.state.all, friend1: this.state.value };
+    AsyncStorage.setItem("items", JSON.stringify(newItems));
+    this.props.navigation.navigate('Home');
   }
   onUpdate(value) {
     this.setState({ value });
+    AsyncStorage.getItem("items").then(json => {
+      try {
+        const items = JSON.parse(json);
+        this.setSource(items, items, { loading: false });
+      } catch(e) {
+        this.setState({
+          loading: false
+        });
+      }
+    });
   }
     render() {
       return (
@@ -37,7 +64,7 @@ export default class DeviceVIews extends Component {
             />
             <Button
               style={styles.button}
-              onPress={() => console.log("błaton został naciśnięty")}
+              onPress={this.onClick}
               title="ADD FRIEND"
               color={color}
               padding="20"

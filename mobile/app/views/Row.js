@@ -9,29 +9,17 @@ class Row extends Component {
     onPress(page) {
         this.props.navigation.navigate(page);
     }
+    getValue() {
+        for(let key in this.props.value){
+            if(this.props.value.hasOwnProperty(key)) {
+              return this.props.value[key];
+            }
+          }
+    }
     render() {
-        // const { complete } = this.props;
-        // const textComponent = (
-        //     <TouchableOpacity style={styles.textWrap} onLongPress={() => this.props.onToggleEdit(true)}>
-        //         <Text style={[styles.text, complete && styles.complete]}>{this.props.text}</Text>
-        //     </TouchableOpacity>
-        // );
-        // const removeButton = (
-        //     <TouchableOpacity onPress={this.props.onRemove}>
-        //         <Text style={styles.destroy}>X</Text>
-        //     </TouchableOpacity>
-        // );
-
-        // const doneButton = (
-        //     <TouchableOpacity onPress={() => this.props.onToggleEdit(false)}>
-        //         <Text>Save</Text>
-        //     </TouchableOpacity>
-        // )
-
-
         return (
             <View style={styles.container}>
-                <Text style={styles.text}>Janusz</Text>
+                <Text style={styles.text}>{this.getValue()}</Text>
                 <View style={styles.row}>
                     <TouchableOpacity onPress={() => this.onPress("Arrow")}>
                         <Image source={require('./assets/loop-icon.png')} style={styles.icon} />
@@ -55,7 +43,10 @@ const styles = StyleSheet.create({
         backgroundColor: "#333333",
         marginBottom: 10,
         paddingLeft: 10,
-        paddingRight: 10
+        paddingRight: 10,
+        elevation: 9,
+        borderBottomWidth: 3,
+        borderColor: "#111111"
     },
     text: {
         fontSize: 24,

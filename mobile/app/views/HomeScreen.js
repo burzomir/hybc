@@ -8,40 +8,66 @@ import {
   Image,
   ListView,
   Keyboard,
+  AsyncStorage
 } from 'react-native';
 import Row from './Row';
 
-const arr = [
-  {key: 1, value: 444},
-  {key: 2, value: 444},
-  {key: 3, value: 444},
-  {key: 4, value: 444},
-  {key: 5, value: 444},
-];
+const count_obj = (obj) => {
+  let i = 0;
+  for(let key in obj){
+    if(obj.hasOwnProperty(key)) {
+      i++;
+    }
+  }
+  return i;
+}
 
 
-const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-const tab = ds.cloneWithRows(arr);
 export default class HomeScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      all: []
+    }
+  }
+  componentWillMount() {
+    AsyncStorage.getItem("items").then(json => {
+      try {
+        const all = JSON.parse(json);
+        if(!all || count_obj(all) === 0) all = {};
+        const array = [];
+        for(var key in all) {
+          if(all.hasOwnProperty(key)) {
+              array.push({[key]: all[key]})
+          }
+      }
+      console.log(array);
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        const tab = ds.cloneWithRows(array);
+        this.setState({ all: tab });
+      } catch(e) {
+      }
+    });
+  }
     render() {
       const { navigate } = this.props.navigation;
       return (
         <View style={styles.container}>
           <Image source={require('./assets/logo.png')} style={styles.logo} />
-            <ListView
+            {this.state.all._cachedRowCount ? <ListView
               style={styles.list}
               enableEmptySections
-              dataSource={tab}
-              renderRow={({ key, value }) => {
+              dataSource={this.state.all}
+              renderRow={({ key, ...value }) => {
                 return (
                   <Row
                     key={key}
-                    value={value}
+                    value={{...value}}
                     navigation={this.props.navigation}
                   />
                 )
               }}
-            />
+            />: null}
         </View>
       );
     }
