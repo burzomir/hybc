@@ -15,9 +15,13 @@ def flatter(ls):
 def remove_redundant_intersection(intersection, ls):
     output = set()
     f_ls = flatter(ls)
-    for ele in intersection:
-        if ele not in f_ls:
-            output.add(ele)
+    if type(intersection) in (set, list, tuple):
+        for ele in intersection:
+            if ele not in f_ls:
+                output.add(ele)
+    else:
+        output.add(intersection)
+
     return output
 
 
@@ -53,10 +57,12 @@ def algo(from_device, to_device, steps=None, visited=None):
         isect = remove_redundant_intersection(X, steps)
         isect = isect.difference(to_device)
         if len(isect) == 1:
-            steps += isect.pop()
+            steps += [isect.pop()]
         elif isect:
-            steps += [isect]
-        steps += to_device
+            steps += [[isect]]
+        steps += [to_device]
+        if steps[-1] == steps[-2]:
+            steps = steps[:-1]
         return steps
 
     C_list = set(DeviceRelation
