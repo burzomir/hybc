@@ -20,7 +20,7 @@ export default class extends Component {
     }
 
     submit() {
-        this.props.submit(this.state);
+        this.props.onSubmit(this.state);
     }
 
     update(data) {
@@ -40,7 +40,7 @@ export default class extends Component {
                 />
                 <Button
                     title="Login"
-                    onPress={() => this.submit}
+                    onPress={() => this.submit()}
                 />
             </View>
         );

@@ -7,8 +7,10 @@ import {
     Button,
     TextInput
 } from 'react-native';
+import { connect } from 'react-redux';
 
 import LoginForm from '../components/LoginForm';
+import { login } from '../auth/actions';
 
 const styles = StyleSheet.create({
     container: {
@@ -16,7 +18,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default class LoginScreen extends React.Component {
+class LoginScreen extends React.Component {
 
     static navigationOptions = {
         header: null,
@@ -39,3 +41,12 @@ export default class LoginScreen extends React.Component {
         );
     }
 }
+
+const mapProps = ({ auth }) => ({ isLogging: auth.isLogging });
+const mapDispatch = (dispatch) => ({
+    onLogin({ username, password }) {
+        dispatch(login(username, password));
+    }
+});
+
+export default connect(mapProps, mapDispatch)(LoginScreen);
