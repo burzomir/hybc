@@ -69,7 +69,7 @@ getHorizontalRotation(p2, p1){
   return angleDeg;
 }
 
-  componentDidUpdate() {
+  componentDidUpdate(angle) {
     var now = Date.now();
    // var diff = now - lastRendered;
    // lastRendered = now;

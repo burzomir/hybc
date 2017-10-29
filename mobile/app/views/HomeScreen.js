@@ -23,7 +23,7 @@ export default class HomeScreen extends Component {
       }).start()
       const interpolateRotation = this.animatedValue.interpolate({
         inputRange: [0, 1],
-        outputRange: ['200deg', '280deg'],
+        outputRange: ['0deg', '0deg'],
       })
       const animatedStyle = {
         transform: [
