@@ -9,8 +9,8 @@ float angle(vec2 a, vec2 b) {
   return acos(dot(normalize(a), normalize(b)));
 }
 bool insideTriangle(vec2 uv) {
-  vec2 a = vec2(0.3, 0.5) - uv;
-  vec2 b = vec2(0.5, 1.0) - uv;
+  vec2 a = vec2(0.0, 0.5) - uv;
+  vec2 b = vec2(1.0, 1.0) - uv;
   vec2 c = vec2(1.0, 1.5) - uv;
   
   return equal(angle(a, b) + angle(b, c) + angle(a, c), PI * 2.0);

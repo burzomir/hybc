@@ -9,12 +9,12 @@ export default class extends Component {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop:20,
-        marginBottom:20,        
+        marginTop:40,
+        marginBottom:40,        
       }}>
 <Triangle
-width={140}
-height={80}
+width={100}
+height={70}
 color={'#D80016'}
 direction={'left'}
 />
