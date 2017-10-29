@@ -83,7 +83,8 @@ getHorizontalRotation(p2, p1){
     navigator.geolocation.getCurrentPosition(
       (position) => {
         var initialPosition = JSON.stringify(position);
-        this.setState({initialPosition});
+        console.log("initialPosition", initialPosition);
+       // this.setState({initialPosition});
       },
       (error) => alert(error.message),
       {enableHighAccuracy: true, timeout: 3000, maximumAge: 1000}
