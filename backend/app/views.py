@@ -117,7 +117,5 @@ class DeviceRelationConsumer(RestTokenConsumerMixin, WebsocketConsumer):
     def go_to_handler(self, searched_device):
         pass
 
-
-
     def go_to_cancel_handler(self, payload):
         DeviceSubscription.objects.filter(subscriber=self.from_device_id).delete()
