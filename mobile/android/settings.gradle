@@ -1,5 +1,12 @@
 rootProject.name = 'mobile'
+include ':easy-bluetooth-classic'
+project(':easy-bluetooth-classic').projectDir = new File(rootProject.projectDir, '../node_modules/easy-bluetooth-classic/android')
 include ':react-native-ble-plx'
 project(':react-native-ble-plx').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-ble-plx/android')
 
 include ':app'
+
+include ':RNGL'
+project(':RNGL').projectDir = file('../node_modules/gl-react-native/android')
+include ':react-native-sensors'
+project(':react-native-sensors').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sensors/android')

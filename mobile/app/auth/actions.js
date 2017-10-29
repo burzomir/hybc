@@ -1,6 +1,6 @@
-import RestApi from '../lib/connect';
-import { AUTH_LOGIN, AUTH_LOGIN_SUCCESS } from './actionTypes';
-const api = RestApi('http://192.168.43.195:8000');
+import RestApi from '../myLib/connect';
+import { AUTH_LOGIN, AUTH_LOGIN_SUCCESS, ROTATION } from './actionTypes';
+const api = RestApi('https://hybc.jroslaniec.com:8000');
 
 export const login = (username, password) => {
     return (dispatch) => {
@@ -17,3 +17,11 @@ export const login = (username, password) => {
             }));
     };
 };
+
+export const rotation = (angledegree) =>{
+    console.log("++++++ROTAT" , angledegree);
+    return  {
+        type: ROTATION,
+        deg: angledegree
+    };
+}
