@@ -137,6 +137,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-device-info')
     compile project(':easy-bluetooth-classic')
     compile project(':react-native-ble-plx')
     compile fileTree(dir: "libs", include: ["*.jar"])

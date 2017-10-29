@@ -30,31 +30,9 @@ export default class Scanner extends React.Component {
             console.log(event);
         });
         EasyBluetooth.init(config);
-
     }
 
     scan() {
-        // const results = [];
-
-        // this.bleManager.startDeviceScan(null, null, (_, device) => {
-        //     results.push(device);
-        // });
-
-        // setTimeout(() => {
-        //     this.bleManager.stopDeviceScan();
-        //     const devices = immutable
-        //         .List(results)
-        //         .groupBy(device => device.id)
-        //         .map(group => group.last())
-        //         .sort((deviceA, deviceB) => deviceB.rssi - deviceA.rssi)
-        //         .toArray();
-
-        //     this.props.on({
-        //         type: Scanner.actions.SCAN_RESULTS,
-        //         payload: devices
-        //     });
-
-        // }, 1000);
         EasyBluetooth.startScan()
             .then(results => {
                 this.props.on({

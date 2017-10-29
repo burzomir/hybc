@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import immutable from 'immutable';
 import _ from "lodash";
 import { WS } from '../lib/ws';
+import DeviceInfo from 'react-native-device-info';
 import connect from '../lib/connect';
 
 export default class NodesSocket extends React.Component {
@@ -10,6 +11,11 @@ export default class NodesSocket extends React.Component {
         UPDATE_NODES: 'UPDATE_NODES',
         GO_TO: 'GO_TO',
         GO_TO_PATH: 'GO_TO_PATH'
+    }
+
+    constructor(props) {
+        super(props);
+        this.deviceName = DeviceInfo.getDeviceName();
     }
 
     componentDidMount() {
@@ -33,8 +39,8 @@ export default class NodesSocket extends React.Component {
         const data = {
             type: 'UPDATE_NODES',
             payload: nodes.map(node => ({
-                from_device_id: 0,
-                to_device_id: node.id,
+                from_device_id: this.deviceName,
+                to_device_id: node.name || node.id,
                 distance: node.rssi
             }))
         };
