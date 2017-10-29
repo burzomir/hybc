@@ -33,7 +33,7 @@ export default class NodesSocket extends React.Component {
         const data = {
             type: 'UPDATE_NODES',
             payload: nodes.map(node => ({
-                from_device_id: 'mydevice_id',
+                from_device_id: 0,
                 to_device_id: node.id,
                 distance: node.rssi
             }))
