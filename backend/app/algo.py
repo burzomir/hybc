@@ -21,7 +21,12 @@ def remove_redundant_intersection(intersection, ls):
     return output
 
 
-def algo(from_device, to_device, steps=None):
+def algo(from_device, to_device, steps=None, visited=None):
+    if visited is None:
+        visited = set()
+    if from_device in visited:
+        return []
+    visited.add(from_device)
     if from_device == to_device:
         return []
     print(f'from_device: {from_device}, to_device: {to_device}, steps: {steps}.')
@@ -69,7 +74,7 @@ def algo(from_device, to_device, steps=None):
                 .values_list('to_device_id', flat=True))
         A_i_C = A.intersection(C)
         if A_i_C:
-            result = algo(c, to_device, None)
+            result = algo(c, to_device, None, visited)
             if result:
                 isect = remove_redundant_intersection(A_i_C, steps)
                 isect =isect.difference(to_device)
@@ -80,4 +85,7 @@ def algo(from_device, to_device, steps=None):
                 steps += result
                 break
 
+    if steps:
+        if steps[-1] != to_device:
+            return []
     return steps
