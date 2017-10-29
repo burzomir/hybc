@@ -3,6 +3,7 @@ package com.mobile;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.github.douglasjunior.ReactNativeEasyBluetooth.classic.ClassicPackage;
 import com.polidea.reactnativeble.BlePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -24,6 +25,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ClassicPackage(),
             new BlePackage()
       );
     }

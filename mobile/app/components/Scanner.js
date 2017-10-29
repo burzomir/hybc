@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import immutable from 'immutable';
 import _ from "lodash";
 import { BleManager } from 'react-native-ble-plx';
+import EasyBluetooth from 'easy-bluetooth-classic';
 
 export default class Scanner extends React.Component {
 
@@ -19,30 +20,57 @@ export default class Scanner extends React.Component {
     constructor(props) {
         super(props);
         this.bleManager = new BleManager();
+        var config = {
+            "uuid": "00001101-0000-1000-8000-00805f9b34fb",
+            "deviceName": "Bluetooth Example Project",
+            "bufferSize": 1024,
+            "characterDelimiter": "\n"
+        }
+        EasyBluetooth.addOnDeviceFoundListener((event) => {
+            console.log(event);
+        });
+        EasyBluetooth.init(config);
+
     }
 
     scan() {
-        const results = [];
+        // const results = [];
 
-        this.bleManager.startDeviceScan(null, null, (_, device) => {
-            results.push(device);
-        });
+        // this.bleManager.startDeviceScan(null, null, (_, device) => {
+        //     results.push(device);
+        // });
 
-        setTimeout(() => {
-            this.bleManager.stopDeviceScan();
-            const devices = immutable
-                .List(results)
-                .groupBy(device => device.id)
-                .map(group => group.last())
-                .sort((deviceA, deviceB) => deviceB.rssi - deviceA.rssi)
-                .toArray();
+        // setTimeout(() => {
+        //     this.bleManager.stopDeviceScan();
+        //     const devices = immutable
+        //         .List(results)
+        //         .groupBy(device => device.id)
+        //         .map(group => group.last())
+        //         .sort((deviceA, deviceB) => deviceB.rssi - deviceA.rssi)
+        //         .toArray();
 
-            this.props.on({
-                type: Scanner.actions.SCAN_RESULTS,
-                payload: devices
+        //     this.props.on({
+        //         type: Scanner.actions.SCAN_RESULTS,
+        //         payload: devices
+        //     });
+
+        // }, 1000);
+        EasyBluetooth.startScan()
+            .then(results => {
+                this.props.on({
+                    type: Scanner.actions.SCAN_RESULTS,
+                    payload: immutable
+                        .List(results)
+                        .map(device => ({ ...device, id: device.address }))
+                        .groupBy(device => device.id)
+                        .map(group => group.last())
+                        .sort((deviceA, deviceB) => deviceB.rssi - deviceA.rssi)
+                        .toArray()
+                });
+            })
+            .catch(error => {
+                console.log(error);
             });
-
-        }, 1000);
     }
 
     componentWillUnmount() {
