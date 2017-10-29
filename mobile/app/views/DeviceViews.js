@@ -10,8 +10,8 @@ import {
 
 import immutable from 'immutable';
 import _ from "lodash";
-
-import { BleManager } from 'react-native-ble-plx';
+import Scanner from '../components/Scanner';
+import NodesSocket from '../components/NodesSocket';
 
 export default class DeviceVIews extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -31,40 +31,68 @@ export default class DeviceVIews extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            devices: [],
-            isSearching: false
+            devices: []
         }
-        this.bleManager = new BleManager();
     }
 
     search() {
-        const results = [];
+        this.setState(prev => ({
+            ...prev,
+            isSearching: true,
+            scannerAction: {
+                type: Scanner.actions.SCAN
+            }
+        }));
+    }
 
-        this.setState(prev => ({ ...prev, isSearching: true }));
+    setResults(results) {
+        this.setState(prev => ({
+            devices: results,
+            isSearching: false,
+            nodesSocketAction: {
+                type: NodesSocket.actions.UPDATE_NODES,
+                payload: results
+            }
+        }))
+    }
 
-        this.bleManager.startDeviceScan(null, null, (_, device) => {
-            results.push(device);
-        });
+    handleScannerAction(action) {
+        switch (action.type) {
+            case Scanner.actions.SCAN_RESULTS:
+                return this.setResults(action.payload);
+            default:
+                return;
+        }
+    }
 
-        setTimeout(() => {
-            this.bleManager.stopDeviceScan();
-            const devices = immutable
-                .List(results)
-                .groupBy(device => device.id)
-                .map(group => group.last())
-                .sort((deviceA, deviceB) => deviceB.rssi - deviceA.rssi)
-                .toArray();
-            this.setState(prev => ({ devices, isSearching: false }));
-        }, 1000);
+    handleNodesSocketAction(action) {
+        switch (action.type) {
+            case NodesSocket.actions.GO_TO_PATH:
+                console.log(action.payload);
+                return;
+            default:
+                this.setState(prev => ({...prev, nodesSocketAction: {
+                    type: NodesSocket.actions.GO_TO,
+                    payload: 0
+                }}))
+                return;
+        }
+    }
+
+    finalise() {
+        this.setState(prev => ({
+            ...prev,
+            isSubmitting: false,
+            nodesSocketAction: {
+                type: NodesSocket.actions.GO_TO,
+                payload: prev.devices[0].id
+            }
+        }));
     }
 
     componentDidMount() {
         this.search();
         this.props.navigation.setParams({ search: this.search.bind(this) });
-    }
-
-    componentWillUnmount() {
-        this.bleManager.destroy();
     }
 
     render() {
@@ -76,6 +104,15 @@ export default class DeviceVIews extends React.Component {
                 <FlatList
                     data={this.state.devices}
                     {...{ renderItem, keyExtractor }}
+                />
+                <Scanner
+                    action={this.state.scannerAction}
+                    on={this.handleScannerAction.bind(this)}
+                />
+                <NodesSocket
+                    baseUrl='hybc.jroslaniec.com'
+                    action={this.state.nodesSocketAction}
+                    on={this.handleNodesSocketAction.bind(this)}
                 />
             </View >
         );
